@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from django.core.cache import cache
 
 from django.test import Client, TestCase
 
@@ -52,6 +53,7 @@ class PostURLTests(TestCase):
             f"/posts/{self.post.pk}/edit/": "posts/create_post.html",
             "/create/": "posts/create_post.html",
         }
+        cache.clear()
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
                 response = self.authorized_client.get(address)
