@@ -1,0 +1,9 @@
+{% load static %}
+<title>{% block title %}{% endblock %}</title>
+{% include 'includes/header.html' %}
+<div class="container py-5">
+{% block content %}
+{% endblock %}
+{% include 'includes/paginator.html' %}
+{% include 'includes/footer.html' %}
+</div>
