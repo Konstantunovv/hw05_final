@@ -1,9 +1,8 @@
-from django.conf import settings as st
+from django.conf import settings
 from django.core.paginator import Paginator
 
 
-def paginator_func(post_list, request):
+def paginator_posts(__all__, request):
     # Paginator
-    paginator = Paginator(post_list, st.PAGE_COUNT)
-    page_number = request.GET.get("page")
-    return paginator.get_page(page_number)
+    paginator = Paginator(__all__, settings.PAGE_COUNT)
+    return paginator.get_page(request.GET.get("page"))

@@ -3,7 +3,9 @@ from django.core.cache import cache
 
 from django.test import Client, TestCase
 
+
 from ..models import Group, Post, User
+
 
 
 class PostURLTests(TestCase):
@@ -19,7 +21,7 @@ class PostURLTests(TestCase):
         )
         cls.post = Post.objects.create(text="test post", author=cls.user)
         cls.page_templates = {
-            "/": HTTPStatus.OK,
+            '/': HTTPStatus.OK,
             f"/group/{cls.group.slug}/": HTTPStatus.OK,
             f"/profile/{cls.user}/": HTTPStatus.OK,
             f"/posts/{cls.post.id}/": HTTPStatus.OK,
@@ -37,6 +39,7 @@ class PostURLTests(TestCase):
             "/auth/signup/": HTTPStatus.OK,
         }
 
+
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
@@ -46,7 +49,7 @@ class PostURLTests(TestCase):
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
-            "/":"posts/index.html",
+            '/':"posts/index.html",
             f"/group/{self.group.slug}/": "posts/group_list.html",
             f"/profile/{self.user}/": "posts/profile.html",
             f"/posts/{self.post.id}/": "posts/post_detail.html",

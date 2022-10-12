@@ -4,16 +4,15 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
-from .utils import paginator_func
+from .utils import paginator_posts
 
 
 @cache_page(20)
 def index(request):
     # Главная страница
     tempalte = "posts/index.html"
-    post_list = Post.objects.all()
     context = {
-        "page_obj": paginator_func(post_list, request),
+        "page_obj": paginator_posts(Post.objects.all(), request),
     }
     return render(request, tempalte, context)
 
@@ -22,74 +21,72 @@ def group_posts(request, slug):
     # Страница с группами
     template = "posts/group_list.html"
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.all()
-    context = {"group": group, "page_obj": paginator_func(post_list, request)}
-    return render(request, template, context)
+    return render(
+        request,
+        template,
+        {
+            "group": group,
+            "page_obj": paginator_posts(group.posts.all(), request),
+        },
+    )
 
 
 def profile(request, username):
-    # Профиль пользователя
-    template = "posts/profile.html"
     author = get_object_or_404(User, username=username)
-    following = False
-    if request.user.is_authenticated:
-        following = request.user.follower.filter(author=author).exists()
-    post_list = author.posts.all()
-    page_obj = paginator_func(post_list, request)
     context = {
         "author": author,
-        "page_obj": page_obj,
-        "following": following,
+        "page_obj": paginator_posts(author.posts.all(), request),
+        "following": Follow.objects.filter(
+            user__username=request.user, author=author
+        ).count(),
     }
-    return render(request, template, context)
+    return render(request, "posts/profile.html", context)
 
 
 def post_detail(request, post_id):
     # Показывает пост
-    tempalate = "posts/post_detail.html"
+    template = "posts/post_detail.html"
     post = get_object_or_404(Post, id=post_id)
-    comments = post.comments.all()
-    form = CommentForm()
     context = {
         "post": post,
-        "comments": comments,
-        "form": form,
+        "comments": post.comments.all(),
+        "form": CommentForm(),
     }
-    return render(request, tempalate, context)
+    return render(request, template, context)
 
 
 @login_required
 def post_create(request):
-    # Создание нового поста
-    template = "posts/create_post.html"
-    form = PostForm(request.POST or None, files=request.FILES or None)
-    if form.is_valid():
-        temp_form = form.save(commit=False)
-        temp_form.author = request.user
-        temp_form.save()
-        return redirect("posts:profile", temp_form.author)
-    return render(request, template, {"form": form})
+    form = PostForm(
+        request.POST or None,
+        files=request.FILES or None
+    )
+    if not request.method == 'POST':
+        return render(request, "posts/create_post.html", {'form': form})
+    if not form.is_valid():
+        return render(request, "posts/create_post.html", {'form': form})
+    post = form.save(commit=False)
+    post.author = request.user
+    post.save()
+    return redirect('posts:profile', post.author)
+
 
 
 @login_required
 def post_edit(request, post_id):
-    # Редактирование поста
-    template = "posts/create_post.html"
     post = get_object_or_404(Post, pk=post_id)
     if post.author != request.user:
-        return redirect("posts:post_detail", post_id=post_id)
-
+        return redirect('posts:post_detail', post_id=post_id)
     form = PostForm(
-        request.POST or None, files=request.FILES or None, instance=post
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post
     )
     if form.is_valid():
         form.save()
-        return redirect("posts:post_detail", post_id=post_id)
-    return render(
-        request,
-        template,
-        {"form": form, "is_edit": True, "post": post},
-    )
+        return redirect('posts:post_detail', post_id=post_id)
+    return render(request, 'posts/create_post.html',
+                  {'form': form, "is_edit": True,'post':post})
 
 
 @login_required
@@ -107,12 +104,10 @@ def add_comment(request, post_id):
 @login_required
 def follow_index(request):
     tempalate = "posts/follow.html"
-    title = "Публикации избранных авторов"
-    post_list = Post.objects.filter(author__following__user=request.user)
-    page_obj = paginator_func(post_list, request)
     context = {
-        "title": title,
-        "page_obj": page_obj,
+        "page_obj": paginator_posts(
+            Post.objects.filter(author__following__user=request.user), request
+        ),
     }
     return render(request, tempalate, context)
 
@@ -130,7 +125,9 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     follow_author = get_object_or_404(User, username=username)
-    data_follow = request.user.follower.filter(author=follow_author)
+    data_follow = Follow.objects.filter(
+        author=follow_author, user=request.user
+    )
     if data_follow.exists():
         data_follow.delete()
     return redirect("posts:profile", username)

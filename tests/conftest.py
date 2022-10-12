@@ -31,6 +31,6 @@ assert any(
 ), "Пожалуйста зарегистрируйте приложение в `settings.INSTALLED_APPS`"
 
 pytest_plugins = [
-    "tests.fixtures.fixture_user",
-    "tests.fixtures.fixture_data",
+    "tests.f.fixture_user",
+    "tests.f.fixture_data",
 ]
