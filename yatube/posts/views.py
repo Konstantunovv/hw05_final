@@ -10,11 +10,11 @@ from .utils import paginator_posts
 @cache_page(20)
 def index(request):
     # Главная страница
-    tempalte = "posts/index.html"
+    template = "posts/index.html"
     context = {
         "page_obj": paginator_posts(Post.objects.all(), request),
     }
-    return render(request, tempalte, context)
+    return render(request, template, context)
 
 
 def group_posts(request, slug):
@@ -74,19 +74,21 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    if post.author != request.user:
-        return redirect('posts:post_detail', post_id=post_id)
+    post = get_object_or_404(Post, id=post_id)
+    if request.user != post.author:
+        return redirect('posts:post_detail', post.id)
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
         instance=post
     )
-    if form.is_valid():
-        form.save()
-        return redirect('posts:post_detail', post_id=post_id)
-    return render(request, 'posts/create_post.html',
-                  {'form': form, "is_edit": True,'post':post})
+    if not form.is_valid():
+        return render(request, 'posts/create_post.html', {
+            'post': post,
+            'form': form
+        })
+    form.save()
+    return redirect('posts:post_detail', post.id)
 
 
 @login_required
@@ -124,10 +126,9 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
-    follow_author = get_object_or_404(User, username=username)
-    data_follow = Follow.objects.filter(
-        author=follow_author, user=request.user
-    )
-    if data_follow.exists():
-        data_follow.delete()
-    return redirect("posts:profile", username)
+    get_object_or_404(
+        Follow,
+        author__username=username,
+        user=request.user
+    ).delete()
+    return redirect('posts:profile', username=username)
