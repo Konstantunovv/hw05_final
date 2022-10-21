@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
-from .utils import paginator_posts
+from .utils import paginator
 
 
 @cache_page(20)
@@ -12,7 +12,7 @@ def index(request):
     # Главная страница
     template = "posts/index.html"
     context = {
-        "page_obj": paginator_posts(Post.objects.all(), request),
+        "page_obj": paginator(Post.objects.all(), request),
     }
     return render(request, template, context)
 
@@ -26,7 +26,7 @@ def group_posts(request, slug):
         template,
         {
             "group": group,
-            "page_obj": paginator_posts(group.posts.all(), request),
+            "page_obj": paginator(group.posts.all(), request),
         },
     )
 
@@ -35,10 +35,12 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
     context = {
         "author": author,
-        "page_obj": paginator_posts(author.posts.all(), request),
-        "following": Follow.objects.filter(
-            user__username=request.user, author=author
-        ).count(),
+        "page_obj": paginator(author.posts.all(), request),
+        "following": request.user.is_authenticated
+        and request.user != author
+        and Follow.objects.filter(
+            author=author,
+            user=request.user).exists()
     }
     return render(request, "posts/profile.html", context)
 
@@ -49,7 +51,6 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     context = {
         "post": post,
-        "comments": post.comments.all(),
         "form": CommentForm(),
     }
     return render(request, template, context)
@@ -58,8 +59,6 @@ def post_detail(request, post_id):
 @login_required
 def post_create(request):
     form = PostForm(request.POST or None, files=request.FILES or None)
-    if not request.method == "POST":
-        return render(request, "posts/create_post.html", {"form": form})
     if not form.is_valid():
         return render(request, "posts/create_post.html", {"form": form})
     post = form.save(commit=False)
@@ -100,7 +99,7 @@ def add_comment(request, post_id):
 def follow_index(request):
     tempalate = "posts/follow.html"
     context = {
-        "page_obj": paginator_posts(
+        "page_obj": paginator(
             Post.objects.filter(author__following__user=request.user), request
         ),
     }

@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Послдение обновления{% endblock %}
 {% block content %}
-  {% include 'posts/includes/switcher.html'  with follow=True %}
-  {% load thumbnail %}
+  {% include 'posts/includes/switcher.html' with index=True %}
   {% load cache %}
   {% cache 20 index_page page_obj.number %}
     <div class="container py-2">

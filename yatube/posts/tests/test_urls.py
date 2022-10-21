@@ -4,7 +4,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from ..models import Group, Post, User
-from .Constant import (
+from .constant import (
     FOLLOW,
     GROUP_LIST,
     INDEX,
@@ -19,12 +19,12 @@ from .Constant import (
     REDIRECT_LOGIN_FOLLOW_INDEX,
     REDIRECT_LOGIN_UNFOLLOW,
     REDIRECT_POST_CREATE,
-    SUBSCRIBED_USER,
+    FOLLOW_USER,
     TEST_SLUG,
     TEST_USER,
     TEST_USER_2,
     UNEXISTING_PAGE,
-    UNSUBSCRIBED_USER,
+    UNFOLLOW_USER,
 )
 
 
@@ -85,12 +85,12 @@ class PostURLTest(TestCase):
             [self.POST_EDIT, self.another_author, REDIRECT],
             [FOLLOW, self.client, REDIRECT],
             [FOLLOW, self.author, OK],
-            [SUBSCRIBED_USER, self.client, REDIRECT],
-            [SUBSCRIBED_USER, self.another_author, REDIRECT],
-            [SUBSCRIBED_USER, self.author, REDIRECT],
-            [UNSUBSCRIBED_USER, self.client, REDIRECT],
-            [UNSUBSCRIBED_USER, self.another_author, REDIRECT],
-            [UNSUBSCRIBED_USER, self.author, NOT_FOUND],
+            [FOLLOW_USER, self.client, REDIRECT],
+            [FOLLOW_USER, self.another_author, REDIRECT],
+            [FOLLOW_USER, self.author, REDIRECT],
+            [UNFOLLOW_USER, self.client, REDIRECT],
+            [UNFOLLOW_USER, self.another_author, REDIRECT],
+            [UNFOLLOW_USER, self.author, NOT_FOUND],
         ]
         for url, client, http in page_templates:
             with self.subTest(url=url, client=get_user(client).username):
@@ -102,12 +102,12 @@ class PostURLTest(TestCase):
             [POST_CREATE, self.client, REDIRECT_POST_CREATE],
             [self.POST_EDIT, self.client, self.REDIRECT_LOGIN_POST_EDIT],
             [self.POST_EDIT, self.another_author, self.POST_DETAIL],
-            [SUBSCRIBED_USER, self.client, REDIRECT_LOGIN_FOLLOW],
-            [UNSUBSCRIBED_USER, self.client, REDIRECT_LOGIN_UNFOLLOW],
+            [FOLLOW_USER, self.client, REDIRECT_LOGIN_FOLLOW],
+            [UNFOLLOW_USER, self.client, REDIRECT_LOGIN_UNFOLLOW],
             [FOLLOW, self.client, REDIRECT_LOGIN_FOLLOW_INDEX],
-            [SUBSCRIBED_USER, self.another_author, PROFILE],
-            [UNSUBSCRIBED_USER, self.another_author, PROFILE],
-            [SUBSCRIBED_USER, self.author, PROFILE],
+            [FOLLOW_USER, self.another_author, PROFILE],
+            [UNFOLLOW_USER, self.another_author, PROFILE],
+            [FOLLOW_USER, self.author, PROFILE],
         ]
         for url, client, redirect in pages_redirect:
             with self.subTest(url=url, client=get_user(client).username):

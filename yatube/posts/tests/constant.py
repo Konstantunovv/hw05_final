@@ -13,20 +13,18 @@ TEST_USER = "test_name"
 TEST_USER_2 = "test_name_2"
 INDEX = reverse("posts:index")
 FOLLOW = reverse("posts:follow_index")
-SUBSCRIBED_USER = reverse("posts:profile_follow", args=[TEST_USER])
-SUBSCRIBED_USER_2 = reverse("posts:profile_follow", args=[TEST_USER_2])
-UNSUBSCRIBED_USER = reverse("posts:profile_unfollow", args=[TEST_USER])
+FOLLOW_USER = reverse("posts:profile_follow", args=[TEST_USER])
+FOLLOW_USER_2 = reverse("posts:profile_follow", args=[TEST_USER_2])
+UNFOLLOW_USER = reverse("posts:profile_unfollow", args=[TEST_USER])
 POST_CREATE = reverse("posts:post_create")
 GROUP_LIST = reverse("posts:group_list", args=[TEST_SLUG])
 GROUP_LIST_2 = reverse("posts:group_list", args=[TEST_SLUG_2])
 PROFILE = reverse("posts:profile", args=[TEST_USER])
 LOGIN = reverse("users:login")
-LOGOUT = reverse("users:logout")
-SINGUP = reverse("users:signup")
 NEXT = "?next="
 REDIRECT_POST_CREATE = f"{LOGIN}{NEXT}{POST_CREATE}"
-REDIRECT_LOGIN_FOLLOW = f"{LOGIN}{NEXT}{SUBSCRIBED_USER}"
-REDIRECT_LOGIN_UNFOLLOW = f"{LOGIN}{NEXT}{UNSUBSCRIBED_USER}"
+REDIRECT_LOGIN_FOLLOW = f"{LOGIN}{NEXT}{FOLLOW_USER}"
+REDIRECT_LOGIN_UNFOLLOW = f"{LOGIN}{NEXT}{UNFOLLOW_USER}"
 REDIRECT_LOGIN_FOLLOW_INDEX = f"{LOGIN}{NEXT}{FOLLOW}"
 UNEXISTING_PAGE = "/unexisting_page/"
 OK = HTTPStatus.OK

@@ -7,7 +7,7 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from ..models import Comment, Group, Post, User
-from .Constant import (
+from .constant import (
     IMAGE_FOLDER,
     LOGIN,
     NEXT,
@@ -96,11 +96,6 @@ class PostFormsTest(TestCase):
         response = self.authorized_client.post(
             self.POST_EDIT, data=form_data, follow=True
         )
-        urls = (self.POST_EDIT, POST_CREATE)
-        form_fields = {
-            "text": forms.CharField,
-            "group": forms.fields.ChoiceField,
-        }
         self.assertRedirects(response, self.POST_DETAIL)
         self.assertEqual(Post.objects.count(), post_count)
         post = response.context["post"]
@@ -110,12 +105,21 @@ class PostFormsTest(TestCase):
         self.assertEqual(
             post.image.name, f'{IMAGE_FOLDER}{form_data["image"].name}'
         )
+
+
+    def test_creat_post_correct_context(self):
+        urls = (self.POST_EDIT, POST_CREATE)
+        form_fields = {
+            "text": forms.CharField,
+            "group": forms.fields.ChoiceField,
+        }
         for url in urls:
             with self.subTest(url=url):
                 response = self.authorized_client.get(url)
                 for value, expected in form_fields.items():
                     form_field = response.context["form"].fields.get(value)
                     self.assertIsInstance(form_field, expected)
+
 
     def test_create_comment(self):
         """Валидная форма создает запись в Comment."""
@@ -125,7 +129,6 @@ class PostFormsTest(TestCase):
             self.POST_COMMENT, data=form_data, follow=True
         )
         self.assertRedirects(response, self.POST_DETAIL)
-        self.assertEqual(Comment.objects.count(), 1)
         comment = Comment.objects.get()
         self.assertEqual(comment.text, form_data["text"])
         self.assertEqual(comment.post, self.post)

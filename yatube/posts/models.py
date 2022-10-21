@@ -8,7 +8,7 @@ class Group(models.Model):
     # Модель для сообществ
     title = models.CharField(max_length=200, verbose_name="Название")
     slug = models.SlugField(
-        max_length=50, unique=True, verbose_name="Индефикатор"
+        max_length=50, unique=True, verbose_name="Идентификатор"
     )
     description = models.TextField(verbose_name="Описание")
 
@@ -43,7 +43,7 @@ class Post(models.Model):
         verbose_name="Группа",
         help_text="Группа, к которой будет относиться пост",
     )
-    image = models.ImageField("Картинка", upload_to="posts/", blank=True)
+    image = models.ImageField("Картинка", upload_to="posts/", blank=True,help_text="Загрузите свою картинку")
 
     class Meta:
         ordering = ("-pub_date",)
@@ -109,3 +109,6 @@ class Follow(models.Model):
         ]
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+
+    def __str__(self):
+        return f'{self.user.username}-{self.author.username}'

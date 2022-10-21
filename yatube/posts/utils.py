@@ -2,7 +2,8 @@ from django.conf import settings
 from django.core.paginator import Paginator
 
 
-def paginator_posts(__all__, request):
+def paginator(object_list, request):
     # Paginator
-    paginator = Paginator(__all__, settings.PAGE_COUNT)
-    return paginator.get_page(request.GET.get("page"))
+    return Paginator(object_list, settings.PAGE_COUNT).get_page(
+        request.GET.get("page")
+    )

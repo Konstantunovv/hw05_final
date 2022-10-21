@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ group.title }}{% endblock %}
 {% block content %}
-{% load thumbnail %}
   <div class="container py-2">
     <h1>{{ group.title }}</h1>
     <p>{{ group.description|linebreaks }}</p>

@@ -6,20 +6,20 @@ from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from ..models import Follow, Group, Post, User
-from .Constant import (
+from .constant import (
     FOLLOW,
     GROUP_LIST,
     GROUP_LIST_2,
     INDEX,
     PROFILE,
-    SUBSCRIBED_USER_2,
+    FOLLOW_USER_2,
     TEMP_MEDIA_ROOT,
     TEST_PICTURE,
     TEST_SLUG,
     TEST_SLUG_2,
     TEST_USER,
     TEST_USER_2,
-    UNSUBSCRIBED_USER,
+    UNFOLLOW_USER,
 )
 
 
@@ -82,7 +82,7 @@ class PostViewsTest(TestCase):
                 self.assertEqual(post.group, self.post.group)
                 self.assertEqual(post.image, self.post.image)
 
-    def test_follow_post_page(self):
+    def test_the_post_not_appear_templates_not_intended(self):
         """Пост не появялется в group_list и follow_index, для которых
         не предназначен."""
         urls = (GROUP_LIST_2, FOLLOW)
@@ -149,7 +149,7 @@ class PostViewsTest(TestCase):
     def test_follow_page(self):
         """Авторизированный автор может подписаться на другого автора."""
         follow_count = Follow.objects.count()
-        self.authorized_user.get(SUBSCRIBED_USER_2)
+        self.authorized_user.get(FOLLOW_USER_2)
         self.assertEqual(Follow.objects.count(), follow_count + 1)
         self.assertTrue(
             Follow.objects.filter(user=self.user, author=self.user_2).exists()
@@ -158,7 +158,7 @@ class PostViewsTest(TestCase):
     def test_unfollow_page(self):
         """Авторизированный автор может отписаться от избранного автора."""
         follow_count = Follow.objects.count()
-        self.authorized_user_2.get(UNSUBSCRIBED_USER)
+        self.authorized_user_2.get(UNFOLLOW_USER)
         self.assertEqual(Follow.objects.count(), follow_count - 1)
         self.assertFalse(
             Follow.objects.filter(user=self.user_2, author=self.user).exists()

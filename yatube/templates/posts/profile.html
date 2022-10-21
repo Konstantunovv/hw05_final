@@ -19,9 +19,8 @@
            role="button">Подписатся</a>
     {% endif %}
   {% endif %}
-<br><br>
   {% for post in page_obj %}
-  {% include 'posts/includes/page_template.html' %}
+    {% include 'posts/includes/page_template.html' %}
   {% endfor %}
 </div>
 {% endblock %}
