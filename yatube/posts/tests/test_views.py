@@ -3,9 +3,24 @@ import shutil
 from django.conf import settings
 from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
+from django.urls import reverse
 
 from ..models import Follow, Group, Post, User
-from .constant import *
+from .Constant import (
+    FOLLOW,
+    GROUP_LIST,
+    GROUP_LIST_2,
+    INDEX,
+    PROFILE,
+    SUBSCRIBED_USER_2,
+    TEMP_MEDIA_ROOT,
+    TEST_PICTURE,
+    TEST_SLUG,
+    TEST_SLUG_2,
+    TEST_USER,
+    TEST_USER_2,
+    UNSUBSCRIBED_USER,
+)
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)

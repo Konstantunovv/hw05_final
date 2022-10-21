@@ -1,9 +1,31 @@
 from django.contrib.auth import get_user
 from django.core.cache import cache
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from ..models import Group, Post, User
-from .constant import *
+from .Constant import (
+    FOLLOW,
+    GROUP_LIST,
+    INDEX,
+    LOGIN,
+    NEXT,
+    NOT_FOUND,
+    OK,
+    POST_CREATE,
+    PROFILE,
+    REDIRECT,
+    REDIRECT_LOGIN_FOLLOW,
+    REDIRECT_LOGIN_FOLLOW_INDEX,
+    REDIRECT_LOGIN_UNFOLLOW,
+    REDIRECT_POST_CREATE,
+    SUBSCRIBED_USER,
+    TEST_SLUG,
+    TEST_USER,
+    TEST_USER_2,
+    UNEXISTING_PAGE,
+    UNSUBSCRIBED_USER,
+)
 
 
 class PostURLTest(TestCase):

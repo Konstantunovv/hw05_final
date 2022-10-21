@@ -4,9 +4,23 @@ import tempfile
 from django import forms
 from django.conf import settings
 from django.test import Client, TestCase, override_settings
+from django.urls import reverse
 
 from ..models import Comment, Group, Post, User
-from .constant import *
+from .Constant import (
+    IMAGE_FOLDER,
+    LOGIN,
+    NEXT,
+    POST_CREATE,
+    PROFILE,
+    REDIRECT_POST_CREATE,
+    TEST_PICTURE,
+    TEST_PICTURE_2,
+    TEST_SLUG,
+    TEST_SLUG_2,
+    TEST_USER,
+    TEST_USER_2,
+)
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
