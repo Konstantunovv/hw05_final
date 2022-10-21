@@ -57,38 +57,31 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    form = PostForm(
-        request.POST or None,
-        files=request.FILES or None
-    )
-    if not request.method == 'POST':
-        return render(request, "posts/create_post.html", {'form': form})
+    form = PostForm(request.POST or None, files=request.FILES or None)
+    if not request.method == "POST":
+        return render(request, "posts/create_post.html", {"form": form})
     if not form.is_valid():
-        return render(request, "posts/create_post.html", {'form': form})
+        return render(request, "posts/create_post.html", {"form": form})
     post = form.save(commit=False)
     post.author = request.user
     post.save()
-    return redirect('posts:profile', post.author)
-
+    return redirect("posts:profile", post.author)
 
 
 @login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
-        return redirect('posts:post_detail', post.id)
+        return redirect("posts:post_detail", post.id)
     form = PostForm(
-        request.POST or None,
-        files=request.FILES or None,
-        instance=post
+        request.POST or None, files=request.FILES or None, instance=post
     )
     if not form.is_valid():
-        return render(request, 'posts/create_post.html', {
-            'post': post,
-            'form': form
-        })
+        return render(
+            request, "posts/create_post.html", {"post": post, "form": form}
+        )
     form.save()
-    return redirect('posts:post_detail', post.id)
+    return redirect("posts:post_detail", post.id)
 
 
 @login_required
@@ -127,8 +120,6 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     get_object_or_404(
-        Follow,
-        author__username=username,
-        user=request.user
+        Follow, author__username=username, user=request.user
     ).delete()
-    return redirect('posts:profile', username=username)
+    return redirect("posts:profile", username=username)

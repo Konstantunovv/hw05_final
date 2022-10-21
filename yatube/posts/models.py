@@ -80,9 +80,8 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ("-pub_date",)
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
-
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
 
     def __str__(self):
         return self.text[:15]
@@ -104,8 +103,9 @@ class Follow(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'author'],
-                                    name='unique_following')
+            models.UniqueConstraint(
+                fields=["user", "author"], name="unique_following"
+            )
         ]
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
