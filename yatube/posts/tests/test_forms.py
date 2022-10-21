@@ -106,7 +106,6 @@ class PostFormsTest(TestCase):
             post.image.name, f'{IMAGE_FOLDER}{form_data["image"].name}'
         )
 
-
     def test_creat_post_correct_context(self):
         urls = (self.POST_EDIT, POST_CREATE)
         form_fields = {
@@ -119,7 +118,6 @@ class PostFormsTest(TestCase):
                 for value, expected in form_fields.items():
                     form_field = response.context["form"].fields.get(value)
                     self.assertIsInstance(form_field, expected)
-
 
     def test_create_comment(self):
         """Валидная форма создает запись в Comment."""

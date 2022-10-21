@@ -8,50 +8,86 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0011_auto_20221011_1546'),
+        ("posts", "0011_auto_20221011_1546"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='comment',
-            options={'ordering': ('-pub_date',), 'verbose_name': 'Комментарий', 'verbose_name_plural': 'Комментарии'},
+            name="comment",
+            options={
+                "ordering": ("-pub_date",),
+                "verbose_name": "Комментарий",
+                "verbose_name_plural": "Комментарии",
+            },
         ),
         migrations.AlterModelOptions(
-            name='follow',
-            options={'verbose_name': 'Подписка', 'verbose_name_plural': 'Подписки'},
+            name="follow",
+            options={
+                "verbose_name": "Подписка",
+                "verbose_name_plural": "Подписки",
+            },
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL, verbose_name='Автор'),
+            model_name="comment",
+            name="author",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="comments",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Автор",
+            ),
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='post',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='comments', to='posts.Post', verbose_name='Пост'),
+            model_name="comment",
+            name="post",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="comments",
+                to="posts.Post",
+                verbose_name="Пост",
+            ),
         ),
         migrations.AlterField(
-            model_name='follow',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='following', to=settings.AUTH_USER_MODEL, verbose_name='автор'),
+            model_name="follow",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="following",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="автор",
+            ),
         ),
         migrations.AlterField(
-            model_name='follow',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='follower', to=settings.AUTH_USER_MODEL, verbose_name='пользователь'),
+            model_name="follow",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="follower",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="пользователь",
+            ),
         ),
         migrations.AlterField(
-            model_name='group',
-            name='slug',
-            field=models.SlugField(unique=True, verbose_name='Идентификатор'),
+            model_name="group",
+            name="slug",
+            field=models.SlugField(unique=True, verbose_name="Идентификатор"),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='image',
-            field=models.ImageField(blank=True, help_text='Загрузите свою картинку', upload_to='posts/', verbose_name='Картинка'),
+            model_name="post",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                help_text="Загрузите свою картинку",
+                upload_to="posts/",
+                verbose_name="Картинка",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='follow',
-            constraint=models.UniqueConstraint(fields=('user', 'author'), name='unique_following'),
+            model_name="follow",
+            constraint=models.UniqueConstraint(
+                fields=("user", "author"), name="unique_following"
+            ),
         ),
     ]

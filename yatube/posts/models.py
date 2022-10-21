@@ -43,7 +43,12 @@ class Post(models.Model):
         verbose_name="Группа",
         help_text="Группа, к которой будет относиться пост",
     )
-    image = models.ImageField("Картинка", upload_to="posts/", blank=True,help_text="Загрузите свою картинку")
+    image = models.ImageField(
+        "Картинка",
+        upload_to="posts/",
+        blank=True,
+        help_text="Загрузите свою картинку",
+    )
 
     class Meta:
         ordering = ("-pub_date",)
@@ -111,4 +116,4 @@ class Follow(models.Model):
         verbose_name_plural = "Подписки"
 
     def __str__(self):
-        return f'{self.user.username}-{self.author.username}'
+        return f"{self.user.username}-{self.author.username}"
