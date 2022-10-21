@@ -1,11 +1,10 @@
-{% extends 'base.html' %}
-{% block title %}{{ title }}{% endblock %}
+{% extends "base.html" %}
+{% block title %}Лента подписок{% endblock %}
 {% block content %}
-{% include 'posts/switcher.html' %}
-{% load thumbnail %}
-{% for post in page_obj %}
-  <div class="container col-lg-9 col-sm-12">
-   {% include 'includes/page_template.html' %}
-  </div>
-{% endfor %}
+  {% include 'posts/includes/switcher.html' with follow=True %}
+  <h1>Лента подписок | {{ user.username }}</h1>
+  {% for post in page_obj %}
+    {% include 'posts/includes/page_template.html' %}
+    {% if not forloop.last %}<hr>{% endif %}
+  {% endfor %}
 {% endblock %}

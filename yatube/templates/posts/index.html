@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Послдение обновления{% endblock %}
 {% block content %}
-  {% include 'posts/switcher.html' %}
+  {% include 'posts/includes/switcher.html'  with follow=True %}
   {% load thumbnail %}
   {% load cache %}
   {% cache 20 index_page page_obj.number %}
     <div class="container py-2">
-      <h1>Последние обновления на сайте</h1>
-      {% for post in page_obj %}
-        {% include 'includes/page_template.html' %}
-      {% endfor %}
+    <h1>Последние обновления на сайте</h1>
+    {% for post in page_obj %}
+      {% include 'posts/includes/page_template.html' %}
+    {% endfor %}
   {% endcache %}
-  </div>
+</div>
 {% endblock %}
