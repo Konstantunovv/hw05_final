@@ -121,12 +121,13 @@ class PostFormsTest(TestCase):
 
     def test_create_comment(self):
         """Валидная форма создает запись в Comment."""
-        Comment.objects.count()
+        Comment.objects.all().delete()
         form_data = {"text": "Новый комментарий"}
         response = self.authorized_client.post(
             self.POST_COMMENT, data=form_data, follow=True
         )
         self.assertRedirects(response, self.POST_DETAIL)
+        self.assertEqual(len(Comment.objects.all()), 1)
         comment = Comment.objects.get()
         self.assertEqual(comment.text, form_data["text"])
         self.assertEqual(comment.post, self.post)
