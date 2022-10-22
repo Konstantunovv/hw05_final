@@ -21,7 +21,7 @@
           {% csrf_token %}
           {% include 'includes/form_field_down.html' %}
           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-warning">
               {% if form.instance.pk %}Редактировать запись{% else %}Добавить запись{% endif %}
             </button>
           </div>

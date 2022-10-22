@@ -1,39 +1,44 @@
 {% if page_obj.has_other_pages %}
-<div class=" d-flex justify-content-center">
-<nav aria-label="Page navigation" class="my-5">
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page=1">Первая</a></li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-          Предыдущая
-        </a>
-      </li>
-    {% endif %}
-    {% for i in page_obj.paginator.page_range %}
-      {% if page_obj.number == i %}
-        <li class="page-item active">
-          <span class="page-link">{{ i }}</span>
-        </li>
-      {% else %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
-      {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-          Следующая
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
-          Последняя
-        </a>
-      </li>
-    {% endif %}
-  </ul>
-</nav>
-</div>
+  <div class=" d-flex justify-content-center" style="accent-color: #1c1f23">
+    <nav aria-label="Page navigation" class="my-5">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item ">
+            <a class="page-link"
+               href="?page={{ page_obj.previous_page_number }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                   fill="black" class="bi bi-arrow-left-square-fill"
+                   viewBox="0 0 16 16">
+                <path
+                    d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
+              </svg>
+            </a>
+          </li>
+        {% endif %}
+        {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item nav-tabs">
+              <span class="page-link text-black ">{{ i }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link text-black-50" href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                   fill="black" class="bi bi-arrow-right-square-fill"
+                   viewBox="0 0 16 16">
+                <path
+                    d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+              </svg>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
 {% endif %}
