@@ -4,7 +4,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
-
 from ..models import Follow, Group, Post, User
 from .constant import (
     FOLLOW,
