@@ -9,8 +9,7 @@ SECRET_KEY = (
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'www.greemjooy.pythonanywhere.com',
-    'greemjooy.pythonanywhere.com',
+
 ]
 
 INSTALLED_APPS = [
