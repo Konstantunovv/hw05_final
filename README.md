@@ -6,13 +6,19 @@
 ## Инструкции по установке
 ***- Клонируйте репозиторий:***
 ```
-git clone git@github.com:Konstantunovv/yatube_project.git
+HTTPS
+https://github.com/Konstantunovv/yatube_project.git
+```
+```
+SSH
+git@github.com:Konstantunovv/yatube_project.git
 ```
 
 ***- Установите и активируйте виртуальное окружение:***
 - для MacOS
 ```
 python3 -m venv venv
+source venv/bin/activate
 ```
 - для Windows
 ```
