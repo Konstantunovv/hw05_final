@@ -6,7 +6,7 @@
 ## Инструкции по установке
 ***- Клонируйте репозиторий:***
 ```
-git clone git@github.com:Konstantunovv/hw05_final.git
+<a href='git clone git@github.com:Konstantunovv/yatube_project.git'>Yatube</a>
 ```
 
 ***- Установите и активируйте виртуальное окружение:***
