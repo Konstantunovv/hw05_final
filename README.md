@@ -23,7 +23,6 @@ source venv/bin/activate
 - для Windows
 ```
 python -m venv venv
-source venv/bin/activate
 source venv/Scripts/activate
 ```
 
@@ -34,6 +33,7 @@ pip install -r requirements.txt
 
 ***- Примените миграции:***
 ```
+cd yatube 
 python manage.py migrate
 ```
 
