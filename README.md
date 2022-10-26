@@ -5,9 +5,9 @@
 
 ## Инструкции по установке
 ***- Клонируйте репозиторий:***
-```
+
 <a href='git clone git@github.com:Konstantunovv/yatube_project.git'>Yatube</a>
-```
+
 
 ***- Установите и активируйте виртуальное окружение:***
 - для MacOS
