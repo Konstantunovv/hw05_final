@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Профайл пользователя {{ author.get_full_name }}{% endblock %}
 {% block content %}
-{% load thumbnail %}
-<div class="mb-5">
+  {% load thumbnail %}
+  <div class="mb-5">
     <h1>Посты пользователя {{ author.get_full_name }}</h1>
     <h3>Всего постов: {{ author.posts.count }}</h3>
     <h5>Комментарии: {{ author.comments.count }}</h5>
     <h5>Подписчики: {{ author.following.count }}</h5>
     <h5>Подписки: {{ author.follower.count }}</h5>
-  {% if user.is_authenticated and  author != user %}
-    {% if following %}
-      <a class="btn btn-lg btn-light"
+    {% if user.is_authenticated and  author != user %}
+      {% if following %}
+        <a class="btn btn-lg btn-light"
            href="{% url 'posts:profile_unfollow' author.username %}"
            role="button">Отписаться</a>
-    {% else %}
-      <a class="btn btn-lg btn-light"
+      {% else %}
+        <a class="btn btn-lg btn-light"
            href="{% url 'posts:profile_follow' author.username %}"
            role="button">Подписатся</a>
+      {% endif %}
     {% endif %}
-  {% endif %}
-  {% for post in page_obj %}
-    {% include 'posts/includes/page_template.html' %}
-  {% endfor %}
-</div>
+    {% for post in page_obj %}
+      {% include 'posts/includes/page_template.html' %}
+    {% endfor %}
+  </div>
 {% endblock %}
