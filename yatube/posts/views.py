@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
-from .forms import CommentForm, PostForm
+from .forms import CommentForm, PostForm,GroupForm
 from .models import Follow, Group, Post, User
 from .utils import paginator
 
@@ -52,6 +52,15 @@ def post_detail(request, post_id):
         "form": CommentForm(),
     }
     return render(request, template, context)
+
+@login_required
+def group_create(request):
+    form = GroupForm(request.POST or None)
+    if not form.is_valid():
+        return render(request,'posts/group_create.html',{'form':form})
+    group = form.save(commit=False)
+    group.save()
+    return redirect("posts:group_list", group.slug)
 
 
 @login_required
