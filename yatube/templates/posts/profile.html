@@ -2,17 +2,24 @@
 {% block title %}Профайл пользователя {{ author.get_full_name }}{% endblock %}
 {% block content %}
   {% load thumbnail %}
-  <div class="mb-5">
-    <h1>Посты пользователя {{ author.get_full_name }}</h1>
-    <h3>Всего постов: {{ author.posts.count }}</h3>
-    <h5>Комментарии: {{ author.comments.count }}</h5>
-    <h5>Подписчики: {{ author.following.count }}</h5>
-    <h5>Подписки: {{ author.follower.count }}</h5>
+<div class="container py-1">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div class="col-md-12">
+      <div class="card shadow-sm text-muted">
+          <h1>Посты пользователя {{ author.get_full_name }}</h1>
+          <h3>Всего постов: {{ author.posts.count }}</h3>
+          <h5>Комментарии: {{ author.comments.count }}</h5>
+          <h5>Подписчики: {{ author.following.count }}</h5>
+          <h5>Подписки: {{ author.follower.count }}</h5>
+        </div>
+    </div>
+  </div>
+    </div>
     {% if user.is_authenticated and  author != user %}
       {% if following %}
         <a class="btn btn-lg btn-light"
            href="{% url 'posts:profile_unfollow' author.username %}"
-           role="button">Отписаться</a>
+           role="btn btn-warning">Отписаться</a>
       {% else %}
         <a class="btn btn-lg btn-light"
            href="{% url 'posts:profile_follow' author.username %}"
